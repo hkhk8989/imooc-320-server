@@ -1,14 +1,14 @@
 name: deploy myblog
 
 on:
-  push:
-    branches:
-       - "main"
-    paths:
-      - '.github/workflows/*'
-      - 'src/**'
-      - 'bin/*'
-      - 'package.json'
+ push:
+  branches:
+   - "main"
+  paths:
+   - '.github/workflows/*'
+   - 'src/**'
+   - 'bin/*'
+   - 'package.json'
 
  jobs:
   deploy:

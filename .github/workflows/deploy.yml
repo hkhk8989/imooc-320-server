@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2 # 第三方
-      
+      - uses: actions/checkout@v2 # 第三方 action
+
       - name: create a filder # 创建文件夹
          run: mkdir test-folder
 

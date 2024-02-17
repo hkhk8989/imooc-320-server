@@ -17,18 +17,25 @@ jobs:
     steps:
       - uses: actions/checkout@v2 # 第三的 action
 
-      - name: create a folder # 创建文件夹
-        run: mkdir test-folder
-      - name: print id_rsa # 打印我的 id_rsa
+      - name: set id_rsa # 设置 id_rsa
         run: |
-          echo "start..."
-          echo "${{secrets.MY_ID_RSA}}"
-          echo "end..."
-      - name: create a file # 创建文件
+          mkdir -p ~/.ssh/
+          echo "${{secrets.MY_ID_RSA}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan 116.62.6.29 >> ~/.ssh/known_hosts
+      - name: deploy # 自动发布
         run: |
-          cd test-folder
-          touch a.txt
-          echo "hello word" > a.txt
-          cat a.txt
-      - name: delete a file
-        run: rm -rf a.txt
+          ssh root@116.62.6.29 "
+            # 注意 服务器已经 git clone 代码到 /root/myblog/imooc-320-server
+
+            cd /root/myblog/imooc-320-server;
+            git checkout .;
+            git checkout main;
+            git pull origin main; # 重新下载 最新的代码
+
+            # 重启服务
+            npm install;
+            npm run prd;
+          "
+      - name: delete id_rsa # 删除 id_rsa
+        run: rm -rf ~/.ssh/id_rsa
